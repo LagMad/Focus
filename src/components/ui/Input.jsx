@@ -53,7 +53,7 @@ const Input = forwardRef(
             type="checkbox"
             name={name}
             id={name}
-            className={`appearance-none h-6 w-6 border-4 border-cust-black checked:bg-cust-blue-light checked:border-cust-darker-blue outline-none ${className}`}
+            className={`appearance-none h-6 w-6 border-4 border-cust-black checked:bg-cust-blue-light checked:border-cust-darker-blue outline-none cursor-pointer ${className}`}
             value={value}
             required={required}
           />
