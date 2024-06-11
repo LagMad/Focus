@@ -33,6 +33,9 @@ const Button = ({
         return isActive(path)
           ? "text-cust-white rounded-none border-b-cust-white hover:border-b-cust-pink-light border-b-2 text-lg font-bold"
           : "text-cust-white rounded-none border-b-transparent hover:border-b-cust-white border-b-2 text-lg font-bold";
+      case "special":
+        return "rainbow-btn";
+
       default:
         return "";
     }

@@ -1,8 +1,11 @@
 import React from "react";
 import SVGs from "./SVGs";
 import Button from "../ui/Button";
+import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const navigate = useNavigate()
+
   return (
     <nav className="fixed top-0 left-0 z-50 w-full h-20 flex justify-between items-center px-20 font-SfProDisplay bg-cust-blue-light drop-shadow-lg">
       <div className="w-1/6">
@@ -21,7 +24,7 @@ const NavBar = () => {
           type={"button"}
           variation={"navbar"}
           path={"/agenda"}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/agenda")}
         >
           Agenda
         </Button>
@@ -29,7 +32,7 @@ const NavBar = () => {
           type={"button"}
           variation={"navbar"}
           path={"/todo"}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/todo")}
         >
           To Do
         </Button>
@@ -37,7 +40,7 @@ const NavBar = () => {
           type={"button"}
           variation={"navbar"}
           path={"/habit"}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/habit")}
         >
           Habit
         </Button>
@@ -45,7 +48,7 @@ const NavBar = () => {
           type={"button"}
           variation={"navbar"}
           path={"/notes"}
-          onClick={() => navigate("/")}
+          onClick={() => navigate("/notes")}
         >
           Notes
         </Button>
