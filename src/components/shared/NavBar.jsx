@@ -4,7 +4,7 @@ import Button from "../ui/Button";
 
 const NavBar = () => {
   return (
-    <nav className="fixed top-0 left-0 z-50 w-full h-20 flex justify-between items-center px-20 font-SfProDisplay bg-cust-blue-light">
+    <nav className="fixed top-0 left-0 z-50 w-full h-20 flex justify-between items-center px-20 font-SfProDisplay bg-cust-blue-light drop-shadow-lg">
       <div className="w-1/6">
         <SVGs.Logo />
       </div>

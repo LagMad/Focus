@@ -45,6 +45,23 @@ const Input = forwardRef(
           {children}
         </div>
       );
+    } else if (type === "checkbox") {
+      return (
+        <div className="flex items-center relative w-full group gap-3">
+          <input
+            ref={ref}
+            type="checkbox"
+            name={name}
+            id={name}
+            className={`appearance-none h-6 w-6 border-4 border-cust-black checked:bg-cust-blue-light checked:border-cust-darker-blue outline-none ${className}`}
+            value={value}
+            required={required}
+          />
+          <label htmlFor={name} className="text-base text-cust-black">
+            {children}
+          </label>
+        </div>
+      );
     } else {
       return (
         <div className="flex relative w-full group">

@@ -26,6 +26,9 @@ export default {
         'cust-blue-normal' : '#3431D7',
         'cust-blue-dark' : '#1B19B3',
         'cust-blue-darker' : '#100E87',
+      },
+      backgroundImage: {
+        'HomeBG' : "url('/src/assets/HomeBG.png')"
       }
     },
   },
