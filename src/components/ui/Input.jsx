@@ -62,6 +62,23 @@ const Input = forwardRef(
           </label>
         </div>
       );
+    } else if (type === "textarea") {
+      return (
+        <div className="flex relative w-full group">
+          <textarea
+            ref={ref}
+            name={name}
+            id={name}
+            className={`${className} block py-3 px-3 w-full rounded-lg text-sm text-black focus:text-black bg-cust-pink-lightest outline-none`}
+            placeholder={placeholder}
+            value={value}
+            onChange={onChange}
+            readOnly={readOnly}
+            required={required}
+          />
+          {children}
+        </div>
+      );
     } else {
       return (
         <div className="flex relative w-full group">
@@ -70,7 +87,7 @@ const Input = forwardRef(
             type={type}
             name={name}
             id={name}
-            className={`block py-3 px-3 w-full rounded-lg text-sm text-black focus:text-black bg-white outline-none ${className}`}
+            className={`${className} block py-3 px-3 w-full rounded-lg text-sm text-black focus:text-black bg-white outline-none`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}

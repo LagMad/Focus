@@ -20,7 +20,13 @@ const Button = ({
       case "primary-smaller":
         return "py-2 md:py-2 px-3 md:px-10 text-xl bg-cust-pink-light hover:bg-cust-pink-lighter rounded-full text-cust-white font-bold font-SfProDisplay";
       case "primary-smallest":
-        return "py-2 md:py-2 px-3 md:px-8 text-xl bg-cust-pink-light hover:bg-cust-pink-lighter rounded-full text-cust-white font-bold font-SfProDisplay";
+        return "py-2 md:py-2 px-3 md:px-8 text-xl bg-cust-pink-light hover:bg-cust-pink-lighter border-2 border-cust-pink-light hover:border-cust-pink-lighter rounded-full text-cust-white font-bold font-SfProDisplay";
+      case "primary-smallest-alt":
+        return "py-2 md:py-2 px-3 md:px-8 text-xl bg-cust-white hover:bg-cust-pink-lighter border-2 border-cust-pink-light hover:border-cust-pink-lighter rounded-full text-cust-black font-bold font-SfProDisplay";
+      case "secondary":
+        return "py-2 px-8 text-xl bg-cust-blue-light hover:bg-cust-blue-lighter border-2 border-cust-blue-light hover:border-cust-blue-lighter rounded-full text-cust-white font-bold font-SfProDisplay";
+      case "secondary-alt":
+        return "py-2 px-8 text-xl bg-cust-white hover:bg-cust-blue-lighter border-2 border-cust-blue-light hover:border-cust-blue-lighter rounded-full text-cust-black font-bold font-SfProDisplay";
       case "secondary-circle":
         return "py-2 px-2 text-xl bg-cust-blue-light hover:bg-cust-blue-lighter rounded-full text-cust-white font-bold font-SfProDisplay";
       case "secondary-rectangle":

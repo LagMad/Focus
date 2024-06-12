@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { easeInOut, motion } from "framer-motion";
 import MainLayout from "../components/layout/MainLayout";
 import Button from "../components/ui/Button";
 import { useNavigate } from "react-router-dom";
@@ -58,7 +58,7 @@ const NotFound = () => {
               -20, -20, -20, -20, -20, -10, 0, 10, 20, 20, 20, 20, 20, 10, 0,
               -10, -20,
             ],
-            transition: { duration: 5, repeat: Infinity },
+            transition: { duration: 5, repeat: Infinity},
           }}
         >
           <img
