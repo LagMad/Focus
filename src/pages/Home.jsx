@@ -8,11 +8,13 @@ import Notes from "../components/shared/Note";
 import AddAgendaPopUp from "../components/shared/AddAgendaPopUp";
 import AddNotesPopUp from "../components/shared/AddNotesPopUp";
 import AddTaskPopUp from "../components/shared/AddTaskPopUp";
+import AddHabitPopUp from "../components/shared/AddHabitPopUp";
 
 const Home = () => {
   const [isAddAgendaPopUpVisible, setAddAgendaPopUpVisible] = useState(false);
   const [isAddNotesPopUpVisible, setAddNotesPopUpVisible] = useState(false);
   const [isAddTaskPopUpVisible, setAddTaskPopUpVisible] = useState(false);
+  const [isAddHabitPopUpVisible, setAddHabitPopUpVisible] = useState(false);
 
   const toggleAddAgendaPopUp = () => {
     setAddAgendaPopUpVisible(!isAddAgendaPopUpVisible);
@@ -24,6 +26,10 @@ const Home = () => {
 
   const toggleAddTaskPopUp = () => {
     setAddTaskPopUpVisible(!isAddTaskPopUpVisible);
+  };
+
+  const toggleAddHabitPopUp = () => {
+    setAddHabitPopUpVisible(!isAddHabitPopUpVisible);
   };
 
   return (
@@ -102,7 +108,7 @@ const Home = () => {
                 className={
                   "flex flex-row justify-center items-center gap-3 self-start"
                 }
-                onClick={() => alert("Click!")}
+                onClick={() => toggleAddHabitPopUp()}
               >
                 <SVGs.PlusCircle />
                 Add Habit
@@ -152,6 +158,11 @@ const Home = () => {
         <AddTaskPopUp
           toggleAddTaskPopUp={toggleAddTaskPopUp}
           toggleAddAgendaPopUp={toggleAddAgendaPopUp}
+        />
+      )}
+      {isAddHabitPopUpVisible && (
+        <AddHabitPopUp
+          toggleAddHabitPopUp={toggleAddHabitPopUp}
         />
       )}
     </>
