@@ -4,7 +4,7 @@ import Button from "../components/ui/Button";
 import SVGs from "../components/shared/SVGs";
 import Input from "../components/ui/Input";
 import HabitsTrackerContent from "../components/shared/HabitsTrackerContent";
-import Notes from "../components/shared/Notes";
+import Notes from "../components/shared/Note";
 import AddAgendaPopUp from "../components/shared/AddAgendaPopUp";
 import AddNotesPopUp from "../components/shared/AddNotesPopUp";
 import AddTaskPopUp from "../components/shared/AddTaskPopUp";
@@ -29,7 +29,7 @@ const Home = () => {
   return (
     <>
       <MainLayout>
-        <div className="flex flex-col min-h-screen justify-start items-center gap-5 px-5 pt-10 pb-16 bg-HomeBG bg-cover bg-no-repeat">
+        <div className="flex flex-col min-h-screen justify-start items-center gap-5 px-5 pb-16 bg-HomeBG bg-cover bg-no-repeat">
           <div className="flex flex-row w-full h-auto justify-center items-center bg-cust-pink-lighter rounded-2xl py-5 px-16 bg-opacity-30 backdrop-blur-xl drop-shadow-2xl border-[1px] border-cust-white">
             <div className="flex flex-col w-1/4 justify-center items-start">
               <div className="text-3xl font-bold">Hi, Andrea</div>

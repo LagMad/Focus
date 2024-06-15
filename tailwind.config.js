@@ -8,6 +8,7 @@ export default {
       },
       colors: {
         "cust-black": "#121212",
+        "cust-grey": "#8F8F8F",
         "cust-white": "#FAFAFA",
 
         "cust-pink-lightest": "#FFF5FB",

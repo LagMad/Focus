@@ -2,9 +2,9 @@ import React from "react";
 import Button from "../ui/Button";
 import SVGs from "./SVGs";
 
-const Notes = ({ title, description }) => {
+const Note = ({ title, description, className }) => {
   return (
-    <div className="flex flex-col w-1/2 justify-center items-center bg-cust-white p-5 gap-3 rounded-2xl">
+    <div className={`${className} flex flex-col justify-center items-center bg-cust-white p-5 gap-3 rounded-2xl`}>
       <div className="text-xl font-bold w-full">{title}</div>
       <hr className="w-full h-[2px] bg-cust-black rounded-full opacity-30" />
       <div className="text-xs text-justify">
@@ -22,4 +22,4 @@ const Notes = ({ title, description }) => {
   );
 };
 
-export default Notes;
+export default Note;

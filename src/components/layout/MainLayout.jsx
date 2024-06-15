@@ -4,7 +4,7 @@ import NavBar from "../shared/NavBar";
 
 const MainLayout = ({ children }) => {
   return (
-    <div className="pt-16 text-cust-black font-SfProDisplay bg-cust-pink-lightest">
+    <div className="pt-[100px] text-cust-black font-SfProDisplay bg-cust-pink-lightest">
       <NavBar />
       {children}
       {/* <Footer/> */}

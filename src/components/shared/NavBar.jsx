@@ -4,7 +4,7 @@ import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
 
 const NavBar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   return (
     <nav className="fixed top-0 left-0 z-50 w-full h-20 flex justify-between items-center px-20 font-SfProDisplay bg-cust-blue-light drop-shadow-lg">
@@ -54,7 +54,13 @@ const NavBar = () => {
         </Button>
       </div>
       <div className="flex w-1/6 justify-end">
-        <Button className={"self-end"} type={"button"} variation={"primary-smaller"}>
+        <Button
+          className={"self-end"}
+          type={"button"}
+          variation={"primary-smaller"}
+          path={"/notes"}
+          onClick={() => navigate("/profile")}
+        >
           Profile
         </Button>
       </div>
