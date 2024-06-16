@@ -1,33 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import SVGs from "./SVGs";
 import StatusPopUp from "./StatusPopUp";
+import { editNote, deleteNote } from "../../api/services/notes";
 
-import { addNote } from "../../api/services/notes";
-
-const AddNotesPopUp = ({ toggleAddNotesPopUp }) => {
-  const [isPinned, setIsPinned] = useState(false);
+const EditNotesPopUp = ({ noteId, toggleEditNotesPopUp, initialNoteData }) => {
+  const [isPinned, setIsPinned] = useState(initialNoteData.pinned);
   const [statusPopUp, setStatusPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [formData, setFormData] = useState({
-    title: "",
-    content: "",
-    pinned: false,
-  });
+  const [note, setNote] = useState(initialNoteData);
 
   const handlePinClick = () => {
     setIsPinned(!isPinned);
-    setFormData({ ...formData, pinned: !isPinned });
+    setNote({ ...note, pinned: !isPinned });
   };
 
-  const handleSubmit = async (e) => {
-    // e.preventDefault();
-
+  const handleEdit = async () => {
     try {
-      const response = await addNote(formData);
+      const response = await editNote(noteId, note);
       setTimeout(() => {
-        toggleStatusPopUp();
+        setStatusPopUp(true);
       }, 1000);
       window.location.reload();
     } catch (error) {
@@ -35,14 +28,23 @@ const AddNotesPopUp = ({ toggleAddNotesPopUp }) => {
       if (error.response) {
         const { status, data } = error.response;
         if (status === 500 || status === 400) {
-          setErrorMessage("Email sudah terdaftar!");
-          d;
-        } else {
           setErrorMessage("An error occurred. Please try again.");
         }
       } else {
         setErrorMessage("Network error. Please try again.");
       }
+    }
+  };
+
+  const handleDelete = async (noteId) => {
+    try {
+      const response = await deleteNote(noteId);
+      setTimeout(() => {
+        setStatusPopUp(true);
+      }, 1000);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to delete note:", error);
     }
   };
 
@@ -54,15 +56,13 @@ const AddNotesPopUp = ({ toggleAddNotesPopUp }) => {
             <Input
               className="border-b-2 rounded-none border-b-cust-blue-light text-2xl px-0 py-1"
               placeholder="Add Title"
-              onChange={(e) =>
-                setFormData({ ...formData, title: e.target.value })
-              }
+              value={note.title}
+              onChange={(e) => setNote({ ...note, title: e.target.value })}
             />
             <Button
               className={"flex items-center"}
               type={"button"}
-              value={isPinned}
-              onClick={() => handlePinClick()}
+              onClick={handlePinClick}
             >
               <SVGs.Pin fill={isPinned ? "#ED5CBA" : "none"} />
             </Button>
@@ -71,25 +71,33 @@ const AddNotesPopUp = ({ toggleAddNotesPopUp }) => {
             className={"text-[16px] font-medium"}
             type="textarea"
             placeholder="Add note..."
-            onChange={(e) =>
-              setFormData({ ...formData, content: e.target.value })
-            }
+            value={note.content}
+            onChange={(e) => setNote({ ...note, content: e.target.value })}
           />
-          <div className="flex flex-row justify-end items-center w-full gap-5">
+          <div className="flex flex-row justify-between items-center w-full gap-5">
             <Button
               type={"button"}
-              variation={"secondary-alt"}
-              onClick={() => toggleAddNotesPopUp()}
+              variation={"delete"}
+              onClick={() => handleDelete(note.id)}
             >
-              Cancel
+              Delete
             </Button>
-            <Button
-              type={"button"}
-              variation={"secondary"}
-              onClick={() => handleSubmit()}
-            >
-              Save
-            </Button>
+            <div className="flex flex-row justify-end items-centerw-full gap-5">
+              <Button
+                type={"button"}
+                variation={"secondary-alt"}
+                onClick={() => toggleEditNotesPopUp()}
+              >
+                Cancel
+              </Button>
+              <Button
+                type={"button"}
+                variation={"secondary"}
+                onClick={handleEdit}
+              >
+                Save
+              </Button>
+            </div>
           </div>
         </div>
       </div>
@@ -98,4 +106,4 @@ const AddNotesPopUp = ({ toggleAddNotesPopUp }) => {
   );
 };
 
-export default AddNotesPopUp;
+export default EditNotesPopUp;

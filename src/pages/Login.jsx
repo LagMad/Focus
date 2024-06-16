@@ -22,9 +22,7 @@ const Login = () => {
 
     try {
       const response = await handleLogin(formData);
-      setTimeout(() => {
-        navigate("/");
-      }, 1000);
+      navigate("/");
     } catch (error) {
       console.log(error);
       if (error.response) {

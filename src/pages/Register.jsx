@@ -25,10 +25,10 @@ const Register = () => {
 
     try {
       const response = await handleRegister(formData);
-      toggleStatusPopUp();
       setTimeout(() => {
-        navigate("/login");
+        toggleStatusPopUp();
       }, 1000);
+      navigate("/login");
     } catch (error) {
       console.log(error);
       if (error.response) {

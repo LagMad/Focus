@@ -7,6 +7,7 @@ const Button = ({
   onClick,
   className,
   path,
+  value,
   disabled = false,
 }) => {
   const location = useLocation();
@@ -41,6 +42,8 @@ const Button = ({
           : "text-cust-white rounded-none border-b-transparent hover:border-b-cust-white border-b-2 text-lg font-bold";
       case "special":
         return "rainbow-btn";
+      case "delete":
+        return "py-2 px-8 text-xl bg-red-600 hover:bg-red-400 border-2 border-red-600 hover:border-red-400 rounded-full text-cust-white font-bold font-SfProDisplay"
 
       default:
         return "";
@@ -51,6 +54,7 @@ const Button = ({
     <button
       type={type}
       onClick={onClick}
+      value={value}
       disabled={disabled}
       className={`${getButtonVariation(variation, path)}
        transition-all duration-300 ${className}`}
