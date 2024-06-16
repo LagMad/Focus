@@ -1,6 +1,8 @@
 import React from "react";
 import { createBrowserRouter } from "react-router-dom";
 
+import ProtectedRoute from "../components/routes/ProtectedRoute";
+
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Register from "../pages/Register.jsx";
@@ -13,10 +15,6 @@ import ToDo from "../pages/ToDo";
 
 const Router = createBrowserRouter([
   {
-    path: "/",
-    element: <Home />,
-  },
-  {
     path: "/login",
     element: <Login />,
   },
@@ -25,24 +23,33 @@ const Router = createBrowserRouter([
     element: <Register />,
   },
   {
-    path: "/agenda",
-    element: <Agenda />,
-  },
-  {
-    path: "/habit",
-    element: <Habit />,
-  },
-  {
-    path: "/notes",
-    element: <Notes />,
-  },
-  {
-    path: "/profile",
-    element: <Profile />,
-  },
-  {
-    path: "/todo",
-    element: <ToDo />,
+    element: <ProtectedRoute />,
+    children: [
+      {
+        path: "/",
+        element: <Home />,
+      },
+      {
+        path: "/agenda",
+        element: <Agenda />,
+      },
+      {
+        path: "/habit",
+        element: <Habit />,
+      },
+      {
+        path: "/notes",
+        element: <Notes />,
+      },
+      {
+        path: "/profile",
+        element: <Profile />,
+      },
+      {
+        path: "/todo",
+        element: <ToDo />,
+      },
+    ],
   },
   {
     path: "*",
