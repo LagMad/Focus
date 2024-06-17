@@ -1,27 +1,54 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import SVGs from "./SVGs";
-import { addAgenda } from "../../api/services/agenda";
+import { deleteAgenda, editAgenda } from "../../api/services/agenda";
+import { useNavigate } from "react-router-dom";
 
-const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
+const EditAgendaPopUp = ({
+  agendaId,
+  toggleEditAgendaPopUp,
+  initialAgendaData,
+}) => {
+  const navigate = useNavigate();
   const [statusPopUp, setStatusPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [formData, setFormData] = useState({
-    title: "",
-    start_date: "",
-    start_time: "",
-    end_date: "",
-    end_time: "",
-    description: "",
-  });
+
+  const formatDate = (dateStr) => {
+    const date = new Date(dateStr);
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    return `${day}:${month}:${year}`;
+  };
+
+  const formatTime = (dateStr) => {
+    const date = new Date(dateStr);
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
+    return `${hours}:${minutes}`;
+  };
+
+  const initialFormData = {
+    ...initialAgendaData,
+    start_date: formatDate(initialAgendaData.start_time),
+    start_time: formatTime(initialAgendaData.start_time),
+    end_date: formatDate(initialAgendaData.end_time),
+    end_time: formatTime(initialAgendaData.end_time),
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   const formatDateTime = (dateStr, timeStr) => {
     const [day, month, year] = dateStr.split(":");
     return `${year}-${month}-${day} ${timeStr}`;
   };
 
-  const handleSubmit = async (e) => {
+  const handleEdit = async (e) => {
     e.preventDefault();
 
     const formattedStartTime =
@@ -34,7 +61,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
         : null;
 
     try {
-      const response = await addAgenda({
+      const response = await editAgenda(agendaId, {
         ...formData,
         start_time: formattedStartTime,
         end_time: formattedEndTime,
@@ -62,6 +89,18 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
     }
   };
 
+  const handleDelete = async (agendaId) => {
+    try {
+      const response = await deleteAgenda(agendaId);
+      setTimeout(() => {
+        setStatusPopUp(true);
+      }, 1000);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+    }
+  };
+
   const toggleStatusPopUp = () => {
     setStatusPopUp(!statusPopUp);
   };
@@ -76,10 +115,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
           <Button
             type={"button"}
             variation={"primary-smallest-alt"}
-            onClick={() => {
-              toggleAddAgendaPopUp();
-              toggleAddTaskPopUp();
-            }}
+            onClick={() => navigate("/todo")}
           >
             Task
           </Button>
@@ -90,6 +126,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
         <Input
           className="border-b-2 rounded-none border-b-cust-blue-light text-2xl px-0"
           placeholder="Add Agenda Title"
+          value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
         <div className="flex flex-col w-full justify-start items-center gap-5">
@@ -99,6 +136,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
               <Input
                 className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add start date (DD:MM:YYYY)..."}
+                value={formData.start_date}
                 onChange={(e) =>
                   setFormData({ ...formData, start_date: e.target.value })
                 }
@@ -106,6 +144,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
               <Input
                 className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add start time (HH:mm)..."}
+                value={formData.start_time}
                 onChange={(e) =>
                   setFormData({ ...formData, start_time: e.target.value })
                 }
@@ -119,6 +158,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
               <Input
                 className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add end date (DD:MM:YYYY)..."}
+                value={formData.end_date}
                 onChange={(e) =>
                   setFormData({ ...formData, end_date: e.target.value })
                 }
@@ -126,6 +166,7 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
               <Input
                 className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add end time (HH:mm)..."}
+                value={formData.end_time}
                 onChange={(e) =>
                   setFormData({ ...formData, end_time: e.target.value })
                 }
@@ -137,31 +178,37 @@ const AddAgendaPopUp = ({ toggleAddAgendaPopUp, toggleAddTaskPopUp }) => {
             <Input
               type="textarea"
               placeholder="Add description..."
+              value={formData.description}
               onChange={(e) =>
                 setFormData({ ...formData, description: e.target.value })
               }
             />
           </div>
         </div>
-        <div className="flex flex-row justify-end items-center w-full gap-5">
-          <Button
-            type={"button"}
-            variation={"secondary-alt"}
-            onClick={() => toggleAddAgendaPopUp()}
-          >
-            Cancel
+        <div className="flex flex-row justify-between items-center w-full gap-5">
+          <Button onClick={() => handleDelete(agendaId)}>
+            <SVGs.Trash/>
           </Button>
-          <Button
-            type={"button"}
-            variation={"secondary"}
-            onClick={handleSubmit}
-          >
-            Save
-          </Button>
+          <div className="flex flex-row justify-end items-center gap-5 w-full">
+            <Button
+              type={"button"}
+              variation={"secondary-alt"}
+              onClick={() => toggleEditAgendaPopUp()}
+            >
+              Cancel
+            </Button>
+            <Button
+              type={"button"}
+              variation={"secondary"}
+              onClick={handleEdit}
+            >
+              Save
+            </Button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default AddAgendaPopUp;
+export default EditAgendaPopUp;

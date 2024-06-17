@@ -100,15 +100,8 @@ const ToDo = () => {
           </div>
           <div className="flex flex-row w-full h-auto justify-between items-stretch gap-5">
             <div className="flex flex-col w-1/2 h-full justify-center items-center bg-cust-white bg-opacity-30 backdrop-blur-xl py-5 px-16 rounded-2xl gap-10 drop-shadow-2xl border-[1px] border-cust-white">
-              <div className="flex flex-row w-full justify-between items-center">
-                <div className="text-3xl font-bold">To Do List</div>
-                {/* <Button
-                  type={"button"}
-                  variation={"secondary-circle"}
-                  onClick={() => toggleAddTaskPopUp()}
-                >
-                  <SVGs.PlusCircle fillColor="#FAFAFA" />
-                </Button> */}
+              <div className="flex text-3xl font-bold self-start">
+                To Do List
               </div>
               <div className="flex flex-col w-full justify-start items-center">
                 <div className="flex flex-col w-full justify-start items-center gap-3">
@@ -138,15 +131,8 @@ const ToDo = () => {
               </div>
             </div>
             <div className="flex flex-col w-1/2 h-full justify-center items-center bg-cust-white bg-opacity-30 backdrop-blur-xl py-5 px-16 rounded-2xl gap-10 drop-shadow-2xl border-[1px] border-cust-white">
-              <div className="flex flex-row w-full justify-between items-center">
-                <div className="text-3xl font-bold">Completed</div>
-                {/* <Button
-                  type={"button"}
-                  variation={"secondary-circle"}
-                  onClick={() => toggleAddTaskPopUp()}
-                >
-                  <SVGs.PlusCircle fillColor="#FAFAFA" />
-                </Button> */}
+              <div className="flex text-3xl font-bold self-start">
+                Completed
               </div>
               <div className="flex flex-col w-full justify-start items-center">
                 <div className="flex flex-col w-full justify-start items-center gap-3">

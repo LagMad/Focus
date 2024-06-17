@@ -50,7 +50,7 @@ const EditNotesPopUp = ({ noteId, toggleEditNotesPopUp, initialNoteData }) => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-10 backdrop-blur-sm">
+      <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-10 backdrop-blur-sm font-SfProDisplay">
         <div className="flex flex-col w-1/3 bg-white drop-shadow-2xl rounded-xl justify-center items-center p-8 gap-5">
           <div className="flex flex-row w-full justify-between items-center gap-3">
             <Input
@@ -82,7 +82,7 @@ const EditNotesPopUp = ({ noteId, toggleEditNotesPopUp, initialNoteData }) => {
             >
               Delete
             </Button>
-            <div className="flex flex-row justify-end items-centerw-full gap-5">
+            <div className="flex flex-row justify-end items-center w-full gap-5">
               <Button
                 type={"button"}
                 variation={"secondary-alt"}

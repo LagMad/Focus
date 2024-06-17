@@ -15,10 +15,6 @@ const AddTaskPopUp = ({ toggleAddTaskPopUp, toggleAddAgendaPopUp }) => {
     completed: false,
   });
 
-  const handleCheckboxChange = (e) => {
-    setFormData({ ...formData, completed: e.target.checked });
-  };
-
   const formatDate = (dateStr) => {
     const [day, month, year] = dateStr.split(":");
     return `${year}-${month}-${day}`;
@@ -28,7 +24,10 @@ const AddTaskPopUp = ({ toggleAddTaskPopUp, toggleAddAgendaPopUp }) => {
     e.preventDefault();
 
     const formattedDate = formData.date ? formatDate(formData.date) : null;
-    const deadline = formattedDate && formData.time ? `${formattedDate}T${formData.time}:00` : null;
+    const deadline =
+      formattedDate && formData.time
+        ? `${formattedDate}T${formData.time}:00`
+        : null;
 
     try {
       const response = await addToDo({
@@ -44,7 +43,11 @@ const AddTaskPopUp = ({ toggleAddTaskPopUp, toggleAddAgendaPopUp }) => {
       if (error.response) {
         const { status, data } = error.response;
         if (status === 422) {
-          setErrorMessage(data.errors.deadline ? "The deadline field must be a valid date." : "An error occurred. Please try again.");
+          setErrorMessage(
+            data.errors.deadline
+              ? "The deadline field must be a valid date."
+              : "An error occurred. Please try again."
+          );
         } else if (status === 500 || status === 400) {
           setErrorMessage("An error occurred. Check your input and try again.");
         }
@@ -91,7 +94,7 @@ const AddTaskPopUp = ({ toggleAddTaskPopUp, toggleAddAgendaPopUp }) => {
             <div className="flex flex-row w-full justify-start items-center gap-3">
               <SVGs.Date />
               <Input
-                className="font-medium text-xl px-0 py-0 rounded-none"
+                className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add date (DD:MM:YYYY)..."}
                 onChange={(e) =>
                   setFormData({ ...formData, date: e.target.value })
@@ -101,23 +104,13 @@ const AddTaskPopUp = ({ toggleAddTaskPopUp, toggleAddAgendaPopUp }) => {
             <div className="flex flex-row w-full justify-start items-center gap-3">
               <SVGs.Time />
               <Input
-                className="font-medium text-xl px-0 py-0 rounded-none"
+                className="font-medium text-lg px-0 py-0 rounded-none"
                 placeholder={"Add time (HH:MM)..."}
                 onChange={(e) =>
                   setFormData({ ...formData, time: e.target.value })
                 }
               />
             </div>
-            {/* <div className="flex flex-row w-full justify-start items-start gap-3">
-              <SVGs.Description />
-              <Input
-                type="textarea"
-                placeholder="Add description..."
-                onChange={(e) =>
-                  setFormData({ ...formData, description: e.target.value })
-                }
-              />
-            </div> */}
           </div>
           <div className="flex flex-row justify-end items-center w-full gap-5">
             <Button
