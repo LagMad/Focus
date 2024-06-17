@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MainLayout from "../components/layout/MainLayout";
 import Note from "../components/shared/Note";
-import { getNote } from "../api/services/notes";
+import { getNote, deleteNote } from "../api/services/notes";
 import Button from "../components/ui/Button";
 import SVGs from "../components/shared/SVGs";
 import AddNotesPopUp from "../components/shared/AddNotesPopUp";
@@ -34,6 +34,18 @@ const Notes = () => {
   useEffect(() => {
     getNotes();
   }, []);
+
+  const handleDelete = async (noteId) => {
+    try {
+      const response = await deleteNote(noteId);
+      setTimeout(() => {
+        setStatusPopUp(true);
+      }, 1000);
+      window.location.reload();
+    } catch (error) {
+      console.error("Failed to delete note:", error);
+    }
+  };
 
   const pinnedNotes = notes.filter(note => note.pinned);
   const otherNotes = notes.filter(note => !note.pinned);
@@ -68,6 +80,7 @@ const Notes = () => {
                     content={note.content}
                     pinned={note.pinned}
                     onEdit={() => toggleEditNotesPopUp(note)}
+                    onClick={() => handleDelete(note.id)}
                   />
                 ))
               ) : (
@@ -87,6 +100,7 @@ const Notes = () => {
                     content={note.content}
                     pinned={note.pinned}
                     onEdit={() => toggleEditNotesPopUp(note)}
+                    onClick={() => handleDelete(note.id)}
                   />
                 ))
               ) : (

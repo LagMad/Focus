@@ -1,4 +1,6 @@
-import React, { forwardRef } from "react";
+import React, { forwardRef, useState } from "react";
+import Button from "./Button";
+import SVGs from "../shared/SVGs";
 
 const Input = forwardRef(
   (
@@ -8,11 +10,15 @@ const Input = forwardRef(
       name,
       className,
       onChange,
+      onClickDelete,
+      onClick,
       value,
       placeholder,
+      deadline,
       readOnly,
       required = false,
       options = [],
+      checked,
     },
     ref
   ) => {
@@ -47,19 +53,34 @@ const Input = forwardRef(
       );
     } else if (type === "checkbox") {
       return (
-        <div className="flex items-center relative w-full group gap-3">
-          <input
-            ref={ref}
-            type="checkbox"
-            name={name}
-            id={name}
-            className={`appearance-none h-6 w-6 border-4 border-cust-black checked:bg-cust-blue-light checked:border-cust-darker-blue outline-none cursor-pointer ${className}`}
-            value={value}
-            required={required}
-          />
-          <label htmlFor={name} className="text-base text-cust-black">
-            {children}
-          </label>
+        <div className="flex items-center justify-between relative w-full group gap-6">
+          <div className="flex flex-row items-center justify-start gap-3">
+            <input
+              ref={ref}
+              type="checkbox"
+              name={name}
+              id={name}
+              className={`appearance-none h-6 w-6 border-4 border-cust-black checked:bg-cust-blue-light checked:border-cust-darker-blue outline-none cursor-pointer ${className}`}
+              onChange={onChange}
+              checked={checked}
+            />
+            {/* Attach onClick handler to label */}
+            <label
+              htmlFor={name}
+              className="text-base text-cust-black hover:text-cust-pink-normal transition-all duration-300 cursor-pointer"
+              onClick={onClick} // Trigger onClick callback from parent
+            >
+              {children}
+            </label>
+          </div>
+          <div className="flex flex-row justify-end items-center gap-3">
+            <div className="bg-red-600 text-cust-white px-5 rounded-full">
+              Deadline : {deadline}
+            </div>
+            <Button type={"button"} onClick={onClickDelete}>
+              <SVGs.Trash />
+            </Button>
+          </div>
         </div>
       );
     } else if (type === "textarea") {
@@ -87,7 +108,7 @@ const Input = forwardRef(
             type={type}
             name={name}
             id={name}
-            className={`${className} block py-3 px-3 w-full rounded-lg text-sm text-black focus:text-black bg-white outline-none`}
+            className={`${className} block py-3 px-3 w-full rounded-lg text-sm text-black focus:text-cust-darker-blue bg-transparent border-2 border-cust-black-light-active focus:border-cust-darker-blue focus:outline-none`}
             placeholder={placeholder}
             value={value}
             onChange={onChange}
