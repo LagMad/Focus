@@ -6,12 +6,8 @@ import StatusPopUp from "./StatusPopUp";
 import { editToDo } from "../../api/services/todo";
 import { useNavigate } from "react-router-dom";
 
-const EditTaskPopUp = ({
-  toDoId,
-  toggleEditTaskPopUp,
-  initialTaskData,
-}) => {
-    const navigate = useNavigate()
+const EditTaskPopUp = ({ toDoId, toggleEditTaskPopUp, initialTaskData }) => {
+  const navigate = useNavigate();
   const [statusPopUp, setStatusPopUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState(initialTaskData);
@@ -23,19 +19,15 @@ const EditTaskPopUp = ({
     if (formData.deadline) {
       const [datePart, timePart] = formData.deadline.split(" ");
       const [year, month, day] = datePart.split("-");
-      
+
       // Format date as "DD:MM:YYYY"
       setDate(`${day}:${month}:${year}`);
-      
+
       // Format time as "HH:MM"
       const [hours, minutes] = timePart.split(":").slice(0, 2);
       setTime(`${hours}:${minutes}`);
     }
   }, [formData]);
-
-  const handleCheckboxChange = (e) => {
-    setFormData({ ...formData, completed: e.target.checked });
-  };
 
   const formatDate = (dateStr) => {
     if (!dateStr) return null; // Handle empty date case
@@ -63,7 +55,7 @@ const EditTaskPopUp = ({
       setTimeout(() => {
         toggleStatusPopUp();
       }, 2000);
-      window.location.reload()
+      window.location.reload();
     } catch (error) {
       console.log(error);
       if (error.response) {
@@ -96,7 +88,7 @@ const EditTaskPopUp = ({
               type={"button"}
               variation={"primary-smallest-alt"}
               onClick={() => {
-                navigate("/agenda")
+                navigate("/agenda");
               }}
             >
               Agenda

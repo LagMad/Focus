@@ -104,15 +104,20 @@ const Agenda = () => {
           <div className="flex flex-col w-full justify-start items-center bg-cust-blue-lighter bg-opacity-30 backdrop-blur-xl py-5 px-16 rounded-2xl drop-shadow-2xl border-[1px] border-cust-white">
             <div className="flex flex-row w-full justify-between items-center">
               <div className="text-3xl font-bold">Agenda</div>
-              <Button
-                className={"flex flex-row justify-center items-center gap-3"}
-                type={"button"}
-                variation={"primary-smallest"}
-                onClick={() => toggleAddAgendaPopUp()}
-              >
-                <SVGs.PlusCircle fillColor="#FAFAFA" />
-                <div>Add</div>
-              </Button>
+              <div className="flex flex-row w-full justify-end items-center gap-10">
+                <div className="text-3xl font-bold">
+                  {todayAgendas.length + upcomingAgendas.length}
+                </div>
+                <Button
+                  className={"flex flex-row justify-center items-center gap-3"}
+                  type={"button"}
+                  variation={"primary-smallest"}
+                  onClick={() => toggleAddAgendaPopUp()}
+                >
+                  <SVGs.PlusCircle fillColor="#FAFAFA" />
+                  <div>Add</div>
+                </Button>
+              </div>
             </div>
           </div>
           <div className="flex flex-col justify-start items-stretch gap-8 w-full">

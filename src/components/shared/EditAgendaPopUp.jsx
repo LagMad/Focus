@@ -105,6 +105,7 @@ const EditAgendaPopUp = ({
     setStatusPopUp(!statusPopUp);
   };
 
+
   return (
     <div className="fixed top-0 left-0 w-screen h-screen flex justify-center items-center bg-black bg-opacity-10 backdrop-blur-sm">
       <div className="flex flex-col w-2/5 bg-white drop-shadow-2xl rounded-xl justify-center items-center p-8 gap-10">

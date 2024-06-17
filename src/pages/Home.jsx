@@ -4,7 +4,6 @@ import Button from "../components/ui/Button";
 import SVGs from "../components/shared/SVGs";
 import Input from "../components/ui/Input";
 import HabitsTrackerContent from "../components/shared/HabitsTrackerContent";
-import Notes from "../components/shared/Note";
 import Note from "../components/shared/Note";
 import AddAgendaPopUp from "../components/shared/AddAgendaPopUp";
 import AddNotesPopUp from "../components/shared/AddNotesPopUp";
@@ -12,12 +11,13 @@ import AddTaskPopUp from "../components/shared/AddTaskPopUp";
 import AddHabitPopUp from "../components/shared/AddHabitPopUp";
 import EditTaskPopUp from "../components/shared/EditTaskPopUp";
 import { getAgenda } from "../api/services/agenda";
-
-import { getNote } from "../api/services/notes";
+import { deleteNote, getNote } from "../api/services/notes";
 import { getToDo, editToDo, deleteToDo } from "../api/services/todo";
-import Calendar from "../components/shared/Calendar";
 import AgendaCard from "../components/shared/AgendaCard";
 import EditAgendaPopUp from "../components/shared/EditAgendaPopUp";
+import { getHabit, editHabit, deleteHabit } from "../api/services/habit";
+import EditHabitPopUp from "../components/shared/EditHabitPopUp";
+import EditNotesPopUp from "../components/shared/EditNotesPopUp";
 
 const Home = () => {
   const [isAddAgendaPopUpVisible, setAddAgendaPopUpVisible] = useState(false);
@@ -27,6 +27,7 @@ const Home = () => {
   const [isEditNotesPopUpVisible, setEditNotesPopUpVisible] = useState(false);
   const [isEditTaskPopUpVisible, setEditTaskPopUpVisible] = useState(false);
   const [isEditAgendaPopUpVisible, setEditAgendaPopUpVisible] = useState(false);
+  const [isEditHabitPopUpVisible, setEditHabitPopUpVisible] = useState(false);
   const [notes, setNotes] = useState([]);
   const [noteToEdit, setNoteToEdit] = useState(null);
   const [toDos, setToDos] = useState([]);
@@ -35,6 +36,10 @@ const Home = () => {
   const [todayAgendas, setTodayAgendas] = useState([]);
   const [upcomingAgendas, setUpcomingAgendas] = useState([]);
   const [agendaToEdit, setAgendaToEdit] = useState(null);
+  const [isMorning, setMorning] = useState(true);
+  const [isEvening, setEvening] = useState(false);
+  const [habits, setHabits] = useState([]);
+  const [habitsToEdit, setHabitsToEdit] = useState([]);
 
   const getNotes = async () => {
     try {
@@ -75,7 +80,7 @@ const Home = () => {
     getNotes();
   }, []);
 
-  const handleCheckboxChange = async (id) => {
+  const handleCheckboxChangeToDo = async (id) => {
     const updatedToDos = toDos.map((todo) =>
       todo.id === id ? { ...todo, completed: !todo.completed } : todo
     );
@@ -91,7 +96,7 @@ const Home = () => {
 
   const handleDeleteNote = async (noteId) => {
     try {
-      const response = await deleteToDo(noteId);
+      const response = await deleteNote(noteId);
       setTimeout(() => {
         setStatusPopUp(true);
       }, 1000);
@@ -104,7 +109,6 @@ const Home = () => {
   const getAgendas = async () => {
     try {
       const response = await getAgenda();
-      console.log("response", response);
       setAgendas(response);
       separateAgendas(response);
     } catch (error) {
@@ -190,8 +194,51 @@ const Home = () => {
     setEditAgendaPopUpVisible(!isEditAgendaPopUpVisible);
   };
 
+  const getHabits = async () => {
+    try {
+      const response = await getHabit();
+      setHabits(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getHabits();
+  }, []);
+
+  const handleCheckboxChangeHabits = async (id, day) => {
+    const updatedHabits = habits.map((habit) => {
+      if (habit.id === id) {
+        return { ...habit, [day]: !habit[day] };
+      }
+      return habit;
+    });
+
+    setHabits(updatedHabits);
+
+    const habit = updatedHabits.find((habit) => habit.id === id);
+    try {
+      await editHabit(id, habit);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const toggleEditHabitPopUp = (habit) => {
+    setHabitsToEdit(habit);
+    setEditHabitPopUpVisible(!isEditHabitPopUpVisible);
+  };
+
   const pinnedNotes = notes.filter((note) => note.pinned);
   const otherNotes = notes.filter((note) => !note.pinned);
+
+  const morningHabits = habits.filter(
+    (habit) => habit.time_of_day === "morning"
+  );
+  const eveningHabits = habits.filter(
+    (habit) => habit.time_of_day === "evening"
+  );
 
   return (
     <>
@@ -203,7 +250,9 @@ const Home = () => {
               <div className="text-lg">Today's Summary</div>
             </div>
             <div className="flex flex-col w-1/4 justify-center items-center">
-              <div className="text-3xl font-bold">{todayAgendas.length + upcomingAgendas.length}</div>
+              <div className="text-3xl font-bold">
+                {todayAgendas.length + upcomingAgendas.length}
+              </div>
               <div className="text-lg">Upcoming Events</div>
             </div>
             <div className="flex flex-col w-1/4 justify-center items-center">
@@ -287,7 +336,7 @@ const Home = () => {
                             className="rounded-full"
                             type="checkbox"
                             deadline={formatDate(todo.deadline)}
-                            onChange={() => handleCheckboxChange(todo.id)}
+                            onChange={() => handleCheckboxChangeToDo(todo.id)}
                             onClickDelete={() => handleDeleteNote(todo.id)}
                             onClick={() => toggleEditTaskPopUp(todo)}
                             checked={todo.completed}
@@ -310,16 +359,39 @@ const Home = () => {
             <div className="flex flex-col w-1/2 justify-start items-center bg-cust-white bg-opacity-30 backdrop-blur-xl py-5 px-16 rounded-2xl gap-5 drop-shadow-2xl border-[1px] border-cust-white">
               <div className="text-3xl font-bold w-full">Habits Tracker</div>
               <div className="flex flex-col w-full justify-between items-center gap-3">
-                <HabitsTrackerContent label={"Wake up before 5AM"} />
-                <HabitsTrackerContent label={"Baca buku 30min"} />
+                {morningHabits.length > 0 ? (
+                  habits.map((habit) => (
+                    <HabitsTrackerContent
+                      key={habit.id}
+                      label={habit.name}
+                      monday={habit.monday}
+                      tuesday={habit.tuesday}
+                      wednesday={habit.wednesday}
+                      thursday={habit.thursday}
+                      friday={habit.friday}
+                      saturday={habit.saturday}
+                      sunday={habit.sunday}
+                      onChange={(e) =>
+                        handleCheckboxChangeHabits(habit.id, e.target.name)
+                      }
+                      onClick={() => toggleEditHabitPopUp(habit)}
+                    />
+                  ))
+                ) : (
+                  <div>No routinity found</div>
+                )}
               </div>
               <hr className="w-full h-[2px] bg-cust-black rounded-full" />
               <Button
                 type={"button"}
                 className={
-                  "flex flex-row justify-center items-center gap-3 self-start"
+                  "flex flex-row justify-center items-center gap-3 self-start hover:text-cust-pink-normal"
                 }
-                onClick={() => toggleAddHabitPopUp()}
+                onClick={() => {
+                  setMorning(true);
+                  setEvening(false);
+                  toggleAddHabitPopUp();
+                }}
               >
                 <SVGs.PlusCircle />
                 Add Habit
@@ -346,6 +418,7 @@ const Home = () => {
                       title={note.title}
                       content={note.content}
                       pinned={note.pinned}
+                      onClick={() => handleDeleteNote(note.id)}
                       onEdit={() => toggleEditNotesPopUp(note)}
                     />
                   ))
@@ -356,6 +429,7 @@ const Home = () => {
                       title={note.title}
                       content={note.content}
                       pinned={note.pinned}
+                      onClick={() => handleDeleteNote(note.id)}
                       onEdit={() => toggleEditNotesPopUp(note)}
                     />
                   ))
@@ -375,17 +449,28 @@ const Home = () => {
           toggleAddTaskPopUp={toggleAddTaskPopUp}
         />
       )}
+      {isEditAgendaPopUpVisible && agendaToEdit && (
+        <EditAgendaPopUp
+          toggleEditAgendaPopUp={() => toggleEditAgendaPopUp(null)}
+          agendaId={agendaToEdit.id}
+          initialAgendaData={agendaToEdit}
+        />
+      )}
       {isAddNotesPopUpVisible && (
         <AddNotesPopUp toggleAddNotesPopUp={toggleAddNotesPopUp} />
+      )}
+      {isEditNotesPopUpVisible && noteToEdit && (
+        <EditNotesPopUp
+          toggleEditNotesPopUp={() => toggleEditNotesPopUp(null)}
+          noteId={noteToEdit.id}
+          initialNoteData={noteToEdit}
+        />
       )}
       {isAddTaskPopUpVisible && (
         <AddTaskPopUp
           toggleAddTaskPopUp={toggleAddTaskPopUp}
           toggleAddAgendaPopUp={toggleAddAgendaPopUp}
         />
-      )}
-      {isAddHabitPopUpVisible && (
-        <AddHabitPopUp toggleAddHabitPopUp={toggleAddHabitPopUp} />
       )}
       {isEditTaskPopUpVisible && toDosToEdit && (
         <EditTaskPopUp
@@ -394,11 +479,18 @@ const Home = () => {
           initialTaskData={toDosToEdit}
         />
       )}
-      {isEditAgendaPopUpVisible && agendaToEdit && (
-        <EditAgendaPopUp
-          toggleEditAgendaPopUp={() => toggleEditAgendaPopUp(null)}
-          agendaId={agendaToEdit.id}
-          initialAgendaData={agendaToEdit}
+      {isAddHabitPopUpVisible && (
+        <AddHabitPopUp
+          toggleAddHabitPopUp={toggleAddHabitPopUp}
+          Morning={isMorning}
+          Evening={isEvening}
+        />
+      )}
+      {isEditHabitPopUpVisible && habitsToEdit && (
+        <EditHabitPopUp
+          habitId={habitsToEdit.id}
+          toggleEditHabitPopUp={toggleEditHabitPopUp}
+          initialHabitData={habitsToEdit}
         />
       )}
     </>

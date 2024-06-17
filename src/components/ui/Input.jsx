@@ -64,11 +64,10 @@ const Input = forwardRef(
               onChange={onChange}
               checked={checked}
             />
-            {/* Attach onClick handler to label */}
             <label
               htmlFor={name}
               className="text-base text-cust-black hover:text-cust-pink-normal transition-all duration-300 cursor-pointer"
-              onClick={onClick} // Trigger onClick callback from parent
+              onClick={onClick}
             >
               {children}
             </label>
