@@ -262,7 +262,7 @@ const Home = () => {
               <div className="text-lg">To Do Lists</div>
             </div>
             <div className="flex flex-col w-1/4 justify-center items-center">
-              <div className="text-3xl font-bold">2</div>
+              <div className="text-3xl font-bold">{habits.length}</div>
               <div className="text-lg">Habits Left</div>
             </div>
           </div>
@@ -359,7 +359,7 @@ const Home = () => {
             <div className="flex flex-col w-1/2 justify-start items-center bg-cust-white bg-opacity-30 backdrop-blur-xl py-5 px-16 rounded-2xl gap-5 drop-shadow-2xl border-[1px] border-cust-white">
               <div className="text-3xl font-bold w-full">Habits Tracker</div>
               <div className="flex flex-col w-full justify-between items-center gap-3">
-                {morningHabits.length > 0 ? (
+                {morningHabits.length > 0 || eveningHabits.length > 0 ? (
                   habits.map((habit) => (
                     <HabitsTrackerContent
                       key={habit.id}
