@@ -71,7 +71,7 @@ const Habit = () => {
               Your Routines
             </div>
             <div className="flex flex-row w-1/4 justify-end items-center font-bold text-3xl gap-10">
-              2
+              {habits.length}
               <Button
                 className={"flex flex-row justify-center items-center gap-3"}
                 type={"button"}
